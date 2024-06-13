@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->decimal('total_amount', 10, 2);
-            $table->enum('status', ['pendiente', 'completado', 'cancelado'])->default('pendiente');
+            $table->string('nombre');
+            $table->integer('cantidad');
+            $table->integer('total');
+            $table->string('ubicacion');
             $table->timestamps();
         });
         
