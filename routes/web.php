@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ProductController;
@@ -18,6 +19,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     
     Route::resource('products', ProductController::class);
+    Route::resource('suppliers', SupplierController::class);
 });
 
 
