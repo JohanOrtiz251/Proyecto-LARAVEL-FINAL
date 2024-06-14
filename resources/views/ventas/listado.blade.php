@@ -1,16 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <div class="w-full flex justify-center">
+        <div class="w-full flex justify-center">
+            <div>
                 <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                    {{ __('Lista de Productos a vender') }}
+                    {{ __('Lista de Productos vendidos') }}
                 </h2>
             </div>
-            <div class="w-full flex justify-center">
-                <a href="{{ route('ventas.listaventas') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    {{ __('Registro de las ventas') }}
-                </a>
-            </div>
+           
         </div>
     </x-slot>
 
@@ -34,24 +30,25 @@
                     </div>
                 </form>
 
-                <table class="table-auto w-full ">
+                <table class="table-auto w-full">
                     <thead>
                         <tr>
                             <th class="px-4 py-2">Nombre</th>
-                            <th class="px-4 py-2">Precio</th>
                             <th class="px-4 py-2">Cantidad</th>
+                            <th class="px-4 py-2">Total</th>
+                            <th class="px-4 py-2">Ubicación</th>
                             <th class="px-4 py-2">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($products as $product)
+                        @foreach ($orders as $order)
                             <tr>
-                                <td class="border px-4 py-2">{{ $product->name }}</td>
-                                <td class="border px-4 py-2">${{ $product->price }}</td>
-                                <td class="border px-4 py-2">{{ $product->quantity }}</td>
+                                <td class="border px-4 py-2">{{ $order->nombre }}</td>
+                                <td class="border px-4 py-2">{{ $order->cantidad }}</td>
+                                <td class="border px-4 py-2">${{ $order->total }}</td>
+                                <td class="border px-4 py-2">{{ $order->ubicacion }}</td>
                                 <td class="border px-4 py-2">
-                                    <a href="{{ route('products.show', $product->id) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Ver</a>
-                                    <a href="{{ route('ventas.edit', $product->id) }}" class="bg-black-500 hover:bg-black-700 text-white font-bold py-2 px-4 rounded">Vender</a>
+                                    <a href="{{ route('ventas.show', $order->id) }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Factura</a>
                                 </td>
                             </tr>
                         @endforeach

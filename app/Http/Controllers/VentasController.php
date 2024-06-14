@@ -2,78 +2,110 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Category;
+use Illuminate\Http\Request;
 use App\Models\Product;
-use App\Models\Supplier;
-use App\Http\Requests\ProductRequest;
-use App\Models\Role;
+use App\Models\Order; // Modelo para las órdenes de venta
+use App\Models\OrderDetail;
 
 class VentasController extends Controller
 {
-   
     public function index(Request $request)
     {
         $categories = Category::all();
-    
-        // Obtener la categoría seleccionada del request
+
         $selectedCategory = $request->input('category');
-    
-        // Filtrar productos por la categoría seleccionada si existe
+
         if ($selectedCategory) {
             $products = Product::where('category_id', $selectedCategory)->get();
         } else {
             $products = Product::all();
         }
-    
+
         return view('ventas.venta', compact('products', 'categories', 'selectedCategory'));
     }
-    
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function edit(Product $product)
+    public function edit($id)
     {
+        $product = Product::findOrFail($id);
         return view('ventas.registro', compact('product'));
     }
 
-
-
-    
-    public function store(ProductRequest $request)
+    public function store(Request $request)
     {
-        Role::create($request->validated());
+        // Validar los datos enviados
+        $validatedData = $request->validate([
+            'cedula' => 'required|integer',
+            'nombre' => 'required|string|max:255',
+            'cantidad' => 'required|integer|min:1',
+            'ubicacion' => 'nullable|string|max:255',
+        ]);
 
-        return redirect()->route('ventas.venta')->with('success', 'Venta registrado successfully!');
+        // Buscar el producto por su nombre
+        $product = Product::where('name', $request->input('nombre'))->firstOrFail();
+
+        // Validar que la cantidad no exceda el stock disponible
+        if ($request->input('cantidad') > $product->quantity) {
+            return redirect()->back()->withErrors(['cantidad' => 'La cantidad a vender excede el stock disponible.']);
+        }
+
+        // Calcular el total de la orden
+        $total = $validatedData['cantidad'] * $product->price;
+
+        // Crear una nueva orden
+        $order = Order::create([
+            'user_id' => auth()->id(),
+            'nombre' => $validatedData['nombre'],
+            'cantidad' => $validatedData['cantidad'],
+            'total' => $total,
+            'ubicacion' => $validatedData['ubicacion'],
+        ]);
+
+        // Crear el detalle de la orden
+        OrderDetail::create([
+            'order_id' => $order->id,
+            'cedula' => $validatedData['cedula'],
+            'product_id' => $product->id,
+            'cantidad' => $validatedData['cantidad'],
+            'total' => $total,
+        ]);
+
+        // Actualizar la cantidad de productos disponibles
+        $product->quantity -= $validatedData['cantidad'];
+        $product->save();
+
+        return redirect()->route('ventas.index')->with('success', 'Producto vendido exitosamente!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+    public function listaventas(Request $request){
+
+        $categories = Category::all();
+        $orders = Order::all();
+
+        $selectedCategory = $request->input('category');
+
+        if ($selectedCategory) {
+            $products = Product::where('category_id', $selectedCategory)->get();
+        } else {
+            $products = Product::all();
+        }
+        return view('ventas.listado' , compact('products', 'categories', 'selectedCategory','orders'));
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function show($id)
     {
-        //
+        $orderDetail = OrderDetail::findOrFail($id);
+
+        return view('ventas.factura', compact('orderDetail'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function factura($id)
     {
-        //
+        
+        $order = Order::findOrFail($id);
+
+        
+        return view('ventas.factura', compact('order'));
     }
 }

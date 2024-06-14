@@ -11,9 +11,10 @@ class OrderDetail extends Model
 
     protected $fillable = [
         'order_id',
+        'cedula',
         'product_id',
-        'quantity',
-        'unit_price',
+        'cantidad',
+        'total',
     ];
 
     public function order()

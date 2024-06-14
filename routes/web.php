@@ -17,12 +17,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
-    
     Route::resource('products', ProductController::class);
 
+    // Define la ruta para el listado de ventas específicamente
+    Route::get('/ventas/listaventas', [VentasController::class, 'listaventas'])->name('ventas.listaventas');
+    Route::get('/ventas/{id}', [VentasController::class, 'show'])->name('ventas.show');
+    
     Route::resource('ventas', VentasController::class);
 });
-
-
-
 
