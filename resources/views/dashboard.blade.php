@@ -14,6 +14,9 @@
                 <div class="mt-4">
                     <a href="{{ route('products.index') }}" class="inline-block bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300">Gestión de Productos</a>
                 </div>
+                <div class="mt-4">
+                    <a href="{{ route('suppliers.index') }}" class="inline-block bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300">Gestión de Proveedores</a>
+                </div>
             </div>
         </div>
     </div>
