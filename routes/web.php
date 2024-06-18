@@ -29,5 +29,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::resource('suppliers', SupplierController::class);
     Route::resource('categorys', CategoryController::class);
 
+    Route::get('/ventas/{id}/descargar-factura', [VentasController::class, 'descargarFactura'])->name('ventas.descargar-factura');
+
+
 });
 

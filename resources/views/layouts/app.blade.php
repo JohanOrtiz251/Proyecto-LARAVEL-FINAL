@@ -26,7 +26,8 @@
         <aside class="fixed top-0 left-0 flex flex-col w-64 h-screen px-5 py-8 overflow-y-auto bg-white border-r dark:bg-gray-900 dark:border-gray-700">
             <div class="flex mb-6 ml-4">
                 <a href="{{ route('dashboard') }}">
-                    <img class="w-auto h-7" src="https://merakiui.com/images/logo.svg" alt="Logo">
+                    
+                    <img class="w-auto h-7" src="https://w7.pngwing.com/pngs/202/343/png-transparent-blue-and-black-computer-inventory-management-software-warehouse-management-system-warehouse-miscellaneous-company-text-thumbnail.png" alt="Logo">
                 </a>
             </div>
 
