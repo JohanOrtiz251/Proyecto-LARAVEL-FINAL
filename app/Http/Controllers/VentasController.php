@@ -96,6 +96,7 @@ class VentasController extends Controller
 
     public function listaventas(Request $request)
     {
+        
         $categories = Category::all();
         $selectedCategory = $request->input('category');
         $searchTerm = $request->input('search');
@@ -116,6 +117,8 @@ class VentasController extends Controller
 
         return view('ventas.listado', compact('orders', 'categories', 'selectedCategory', 'searchTerm'));
     }
+
+    
 
     public function show($id)
     {

@@ -19,18 +19,27 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
-    Route::resource('products', ProductController::class);
-
-    // Define la ruta para el listado de ventas específicamente
+    // Rutas específicas para VentasController
     Route::get('/ventas/listaventas', [VentasController::class, 'listaventas'])->name('ventas.listaventas');
     Route::get('/ventas/{id}', [VentasController::class, 'show'])->name('ventas.show');
-    
-    Route::resource('ventas', VentasController::class);
+    Route::get('/ventas/{id}/descargar-factura', [VentasController::class, 'descargarFactura'])->name('ventas.descargar-factura');
+
+    // Rutas de recursos
+    Route::resource('products', ProductController::class);
+    Route::resource('ventas', VentasController::class); // Aquí incluyes solo las rutas necesarias para 'ventas'
     Route::resource('suppliers', SupplierController::class);
     Route::resource('categorys', CategoryController::class);
 
-    Route::get('/ventas/{id}/descargar-factura', [VentasController::class, 'descargarFactura'])->name('ventas.descargar-factura');
+    // Rutas para admin y empleado con middleware de roles
+    Route::middleware('role:admin')->group(function () {
+        Route::get('/admin/dashboard', function () {
+            return view('dashboard');
+        })->name('admin.dashboard');
+    });
 
-
+    Route::middleware('role:employee')->group(function () {
+        Route::get('/employee/dashboard', function () {
+            return view('empleado.dashboard_empleado');
+        })->name('employee.dashboard');
+    });
 });
-

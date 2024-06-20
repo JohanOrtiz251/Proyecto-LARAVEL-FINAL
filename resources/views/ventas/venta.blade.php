@@ -8,7 +8,7 @@
             </div>
             <div class="w-full flex justify-center">
                 <a href="{{ route('ventas.listaventas') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    {{ __('Registro de las ventas') }}
+                    {{ __('Registro de las ventass') }}
                 </a>
             </div>
         </div>

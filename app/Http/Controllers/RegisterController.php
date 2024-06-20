@@ -20,7 +20,7 @@ class RegisterController extends Controller
     {
         // Obtener todos los roles para pasarlos al formulario de registro
         $roles = Role::all();
-        
+
         return view('auth.register', compact('roles'));
     }
 
@@ -49,10 +49,17 @@ class RegisterController extends Controller
             'role_id' => $request->role_id,
         ]);
 
-  
         Auth::login($user);
 
-        
-        return redirect()->route('dashboard');
+        /* return redirect()->route('dashboard'); */
+
+        // Redireccionar según el rol del usuario
+        if ($user->role && $user->role->name == 'admin') {
+            return redirect()->route('admin.dashboard');
+        } elseif ($user->role && $user->role->name == 'employee') {
+            return redirect()->route('employee.dashboard');
+        } else {
+            return redirect()->route('dashboard');
+        }
     }
 }
