@@ -1,16 +1,18 @@
 <?php
 
+
 namespace App\Http\Middleware;
 
 use Closure;
-
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CheckRole
 {
-    public function handle(Request $request, Closure $next, ...$roles)
+    public function handle($request, Closure $next, ...$roles)
     {
-        if (!in_array($request->user()->role->name, $roles)) {
+        $user = Auth::user();
+        
+        if (!$user || !in_array($user->role->name, $roles)) {
             return redirect('/');
         }
 

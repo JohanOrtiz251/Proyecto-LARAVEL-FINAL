@@ -55,7 +55,7 @@ class RegisterController extends Controller
 
         // Redireccionar según el rol del usuario
         if ($user->role && $user->role->name == 'admin') {
-            return redirect()->route('admin.dashboard');
+            return redirect()->route('dashboard');
         } elseif ($user->role && $user->role->name == 'employee') {
             return redirect()->route('employee.dashboard');
         } else {
