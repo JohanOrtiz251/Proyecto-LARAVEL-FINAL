@@ -30,10 +30,26 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
+    
+
     // Rutas específicas para VentasController
     Route::get('/ventas/listaventas', [VentasController::class, 'listaventas'])->name('ventas.listaventas');
     Route::get('/ventas/{id}', [VentasController::class, 'show'])->name('ventas.show');
     Route::get('/ventas/{id}/descargar-factura', [VentasController::class, 'descargarFactura'])->name('ventas.descargar-factura');
+
+  
+    //rutas de empleados
+    
+    Route::get('/empleado/dashboard', function () {
+        return view('empleado/dashboard_empleado');
+    })->name('empleado');
+
+    
+    Route::get('/empleado/productos', [ProductController::class, 'index_empleados'])->name('empleado-productos');
+
+
+
+
 
     // Rutas de recursos
     Route::resource('products', ProductController::class);
