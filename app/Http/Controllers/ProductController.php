@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Supplier;
 use App\Http\Requests\ProductRequest;
+use App\Http\Requests\ProductIndexRequest;
 
 class ProductController extends Controller
 {
@@ -18,14 +19,52 @@ class ProductController extends Controller
 
     } 
     
-    public function index_empleados()
+    public function index_empleados(ProductIndexRequest $request)
     {
-        $products = Product::all();
-       
-        return view('empleado.products.index', compact('products'));
+        $categories = Category::all();
+
+        $selectedCategory = $request->input('category');
+        $searchTerm = $request->input('search');
+
+        $productsQuery = Product::query();
+
+        if ($selectedCategory) {
+            $productsQuery->where('category_id', $selectedCategory);
+        }
+
+        if ($searchTerm) {
+            $productsQuery->where('name', 'like', '%' . $searchTerm . '%');
+        }
+
+        $products = $productsQuery->paginate(5);
+
+        return view('empleado.products.index', compact('products', 'categories', 'selectedCategory', 'searchTerm'));
         
     }
 
+    public function buscador(ProductRequest $request){
+
+        $categories = Category::all();
+
+        $selectedCategory = $request->input('category');
+        $searchTerm = $request->input('search');
+
+        $productsQuery = Product::query();
+
+        if ($selectedCategory) {
+            $productsQuery->where('category_id', $selectedCategory);
+        }
+
+        if ($searchTerm) {
+            $productsQuery->where('name', 'like', '%' . $searchTerm . '%');
+        }
+
+        $products = $productsQuery->paginate(5);
+
+        return view('empleado.products.index', compact('products', 'categories', 'selectedCategory', 'searchTerm'));
+
+
+    }
 
 
 

@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Auth\LogeController;
-
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
@@ -25,31 +24,27 @@ Route::post('/logout', [LogeController::class, 'logout'])->name('logout');
 
 // Rutas protegidas por autenticación y verificación (Sanctum)
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+
     // Dashboard principal después de iniciar sesión
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
 
-    
-
     // Rutas específicas para VentasController
-    Route::get('/ventas/listaventas', [VentasController::class, 'listaventas'])->name('ventas.listaventas');
-    Route::get('/ventas/{id}', [VentasController::class, 'show'])->name('ventas.show');
-    Route::get('/ventas/{id}/descargar-factura', [VentasController::class, 'descargarFactura'])->name('ventas.descargar-factura');
+    Route::prefix('ventas')->group(function () {
+        Route::get('/listaventas', [VentasController::class, 'listaventas'])->name('ventas.listaventas');
+        Route::get('/{id}', [VentasController::class, 'show'])->name('ventas.show');
+        Route::get('/{id}/descargar-factura', [VentasController::class, 'descargarFactura'])->name('ventas.descargar-factura');
+    });
 
-  
-    //rutas de empleados
-    
-    Route::get('/empleado/dashboard', function () {
-        return view('empleado/dashboard_empleado');
-    })->name('empleado');
+    // Rutas para empleados
+    Route::prefix('empleado')->group(function () {
+        Route::get('/dashboard', function () {
+            return view('empleado.dashboard_empleado');
+        })->name('empleado');
 
-    
-    Route::get('/empleado/productos', [ProductController::class, 'index_empleados'])->name('empleado-productos');
-
-
-
-
+        Route::get('/productos', [ProductController::class, 'index_empleados'])->name('empleado-productos');
+    });
 
     // Rutas de recursos
     Route::resource('products', ProductController::class);
