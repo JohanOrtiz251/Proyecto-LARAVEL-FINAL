@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Supplier;
+use App\Models\Audit;
 use App\Http\Requests\SupplierRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SupplierController extends Controller
 {
@@ -21,9 +23,13 @@ class SupplierController extends Controller
 
     public function store(SupplierRequest $request)
     {
-        Supplier::create($request->validated());
+        // Crear el proveedor
+        $supplier = Supplier::create($request->validated());
 
-        return redirect()->route('suppliers.index')->with('success', 'Supplier created successfully!');
+        // Registrar la acción en auditoría
+        $this->logAudit('crear', $supplier);
+
+        return redirect()->route('suppliers.index')->with('success', '¡Proveedor creado exitosamente!');
     }
 
     public function show(Supplier $supplier)
@@ -38,15 +44,40 @@ class SupplierController extends Controller
 
     public function update(SupplierRequest $request, Supplier $supplier)
     {
+        // Actualizar el proveedor
         $supplier->update($request->validated());
 
-        return redirect()->route('suppliers.index')->with('success', 'Supplier updated successfully!');
+        // Registrar la acción en auditoría
+        $this->logAudit('actualizar', $supplier);
+
+        return redirect()->route('suppliers.index')->with('success', '¡Proveedor actualizado exitosamente!');
     }
 
     public function destroy(Supplier $supplier)
     {
+        // Registrar la acción en auditoría antes de eliminar el proveedor
+        $this->logAudit('eliminar', $supplier);
+
+        // Eliminar el proveedor
         $supplier->delete();
 
-        return redirect()->route('suppliers.index')->with('success', 'Supplier deleted successfully!');
+        return redirect()->route('suppliers.index')->with('success', '¡Proveedor eliminado exitosamente!');
+    }
+
+    /**
+     * Registrar la acción en el registro de auditoría.
+     *
+     * @param string $accion
+     * @param \App\Models\Supplier $supplier
+     */
+    protected function logAudit($accion, Supplier $supplier)
+    {
+        Audit::create([
+            'user_id' => Auth::id(),
+            'action' => $accion,
+            'entity_type' => 'App\Models\Supplier',
+            'entity_id' => $supplier->id,
+            'details' => 'Acción ' . $accion . ' en proveedor: ' . $supplier->name,
+        ]);
     }
 }

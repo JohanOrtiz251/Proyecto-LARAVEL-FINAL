@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuditController;
 use App\Http\Controllers\Auth\LogeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SupplierController;
@@ -7,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VentasController;
+use App\Models\Audit;
 
 // Ruta principal
 Route::get('/', function () {
@@ -58,15 +60,19 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         //rutas de ventas
 
         Route::get('/ventas', [VentasController::class, 'ventas_empleado'])->name('ventas-empleado');
-
         Route::get('empleado/products/{product}/editar', [VentasController::class, 'ventas'])->name('empleado.ventas');
-
         Route::get('/ventas/listado', [VentasController::class, 'listaventas_empleado'])->name('listado-ventas');
-       
         Route::post('/ventas/store', [VentasController::class, 'crear_ventas'])->name('ventas-del-empleado');
- //todo bien por aca
         Route::get('ventas/{id}', [VentasController::class, 'ventas_show'])->name('factura.ventas');
-        
+
+        //movimientos 
+
+        Route::get('/Auditorio', [AuditController::class, 'pagina'])->name('historial-movimientos');
+
+
+
+
+
     });
 
     // Rutas de recursos

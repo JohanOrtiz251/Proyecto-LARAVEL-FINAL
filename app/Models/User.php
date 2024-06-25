@@ -72,4 +72,11 @@ class User extends Authenticatable
     {
         return $this->role->name === $roleName;
     }
+
+    public function isAdmin()
+    {
+        // Aquí asumiendo que tienes un campo `role_id` en tu tabla `users` que identifica el rol del usuario
+        return $this->role_id === 1; // El valor 1 podría ser el ID del rol de administrador en tu base de datos
+    }
+    
 }

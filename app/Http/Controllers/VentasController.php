@@ -10,6 +10,8 @@ use App\Models\OrderDetail;
 use Illuminate\Support\Facades\Session;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Audit;
 
 
 class VentasController extends Controller
@@ -117,6 +119,9 @@ class VentasController extends Controller
         $product->quantity -= $validatedData['cantidad'];
         $product->save();
 
+        // Llamar al método para registrar la auditoría
+        $this->logAudit('venta creada', $product);
+
         // Notificación flash de éxito
         Session::flash('success', 'Producto vendido exitosamente!');
 
@@ -168,17 +173,19 @@ class VentasController extends Controller
         $product->quantity -= $validatedData['cantidad'];
         $product->save();
 
+        // Llamar al método para registrar la auditoría
+        $this->logAudit('venta creada por empleado', $product);
+
         // Notificación flash de éxito
         Session::flash('success', 'Producto vendido exitosamente!');
 
-        return redirect()->route('ventas-empleado');
         // Redireccionar a la página de ventas
-        
+        return redirect()->route('ventas-empleado');
     }
 
     public function listaventas(Request $request)
     {
-        
+
         $categories = Category::all();
         $selectedCategory = $request->input('category');
         $searchTerm = $request->input('search');
@@ -202,7 +209,7 @@ class VentasController extends Controller
 
     public function listaventas_empleado(Request $request)
     {
-        
+
         $categories = Category::all();
         $selectedCategory = $request->input('category');
         $searchTerm = $request->input('search');
@@ -224,7 +231,7 @@ class VentasController extends Controller
         return view('empleado.ventas.listado', compact('orders', 'categories', 'selectedCategory', 'searchTerm'));
     }
 
-    
+
 
     public function show($id)
     {
@@ -232,7 +239,7 @@ class VentasController extends Controller
         return view('ventas.factura', compact('orderDetail'));
     }
 
-    
+
     public function ventas_show($id)
     {
         $orderDetail = OrderDetail::findOrFail($id);
@@ -263,5 +270,30 @@ class VentasController extends Controller
 
         // Descargar el PDF con el nombre 'factura-{id}.pdf'
         return $pdf->stream("factura-{$id}.pdf");
+    }
+
+    private function logAudit($accion, $product)
+    {
+        // Obtener el usuario autenticado
+        $user = Auth::user();
+
+        if ($user) {
+            // Obtener el rol del usuario autenticado
+            $rol = $user->isAdmin() ? 'admin' : 'empleado';
+
+            // Crear el registro de auditoría
+            \App\Models\Audit::create([
+                'user_id' => $user->id,
+                'action' => $accion,
+                'entity_type' => 'App\Models\Product',
+                'entity_id' => $product->id,
+                'details' => 'Acción ' . $accion . ' de producto: ' . $product->name . ' por ' . $rol,
+            ]);
+        } else {
+            // Manejo de caso donde no hay usuario autenticado (esto depende de la lógica de tu aplicación)
+            // Puedes lanzar una excepción, registrar en un log, o manejar de otra manera según tus requerimientos
+            // Por ejemplo:
+            throw new \Exception('No se encontró un usuario autenticado para registrar la auditoría.');
+        }
     }
 }
