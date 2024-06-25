@@ -21,14 +21,14 @@
 
 
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('empleado-productos') }}" :active="request()->routeIs('empleado')">
+                    <x-nav-link href="{{ route('empleado-productos') }}" :active="request()->routeIs('empleado-productos')">
                         {{ __('Gestor De Productos') }}
                     </x-nav-link>
                 </div>
 
 
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('empleado') }}" :active="request()->routeIs('empleado')">
+                    <x-nav-link href="{{ route('ventas-empleado') }}" :active="request()->routeIs('ventas-empleado')">
                         {{ __('Realizar Ventas') }}
                     </x-nav-link>
                 </div>

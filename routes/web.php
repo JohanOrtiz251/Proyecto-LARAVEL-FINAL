@@ -43,7 +43,30 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             return view('empleado.dashboard_empleado');
         })->name('empleado');
 
+
+        //rutas de productos 
         Route::get('/productos', [ProductController::class, 'index_empleados'])->name('empleado-productos');
+        Route::get('empleado/products/{product}', [ProductController::class, 'show_empleado'])->name('show_empleado');
+        Route::get('/products/crear', [ProductController::class, 'create_empleado'])->name('crear_producto');
+        Route::get('products/create', [ProductController::class, 'create_empleado'])->name('empleado.products.create');
+        Route::post('/products', [ProductController::class, 'store_empleado'])->name('productos.store');
+        Route::get('products/{product}/editar', [ProductController::class, 'edit_empleado'])->name('empleado.products.edit');
+        Route::put('products/{product}', [ProductController::class, 'update_empleado'])->name('empleado.products.update');
+        Route::delete('products/{product}', [ProductController::class, 'destroy_empleado'])->name('empleado.products.destroy');
+
+
+        //rutas de ventas
+
+        Route::get('/ventas', [VentasController::class, 'ventas_empleado'])->name('ventas-empleado');
+
+        Route::get('empleado/products/{product}/editar', [VentasController::class, 'ventas'])->name('empleado.ventas');
+
+        Route::get('/ventas/listado', [VentasController::class, 'listaventas_empleado'])->name('listado-ventas');
+       
+        Route::post('/ventas/store', [VentasController::class, 'crear_ventas'])->name('ventas-del-empleado');
+ //todo bien por aca
+        Route::get('ventas/{id}', [VentasController::class, 'ventas_show'])->name('factura.ventas');
+        
     });
 
     // Rutas de recursos
