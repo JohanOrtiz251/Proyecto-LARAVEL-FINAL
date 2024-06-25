@@ -12,6 +12,9 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Audit;
+use App\Mail\FacturaMail;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 
 class VentasController extends Controller
@@ -78,26 +81,26 @@ class VentasController extends Controller
 
     public function store(Request $request)
     {
-        // Validación de datos del formulario
         $validatedData = $request->validate([
             'cedula' => 'required|integer',
             'nombre' => 'required|string|max:255',
             'cantidad' => 'required|integer|min:1',
             'ubicacion' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:255',
         ]);
 
-        // Buscar el producto por nombre
-        $product = Product::where('name', $request->input('nombre'))->firstOrFail();
+        $product = Product::where('name', $validatedData['nombre'])->first();
 
-        // Validar la cantidad disponible
-        if ($request->input('cantidad') > $product->quantity) {
+        if (!$product) {
+            return redirect()->back()->withErrors(['nombre' => 'El producto no existe.']);
+        }
+
+        if ($validatedData['cantidad'] > $product->quantity) {
             return redirect()->back()->withErrors(['cantidad' => 'La cantidad a vender excede el stock disponible.']);
         }
 
-        // Calcular el total de la venta
         $total = $validatedData['cantidad'] * $product->price;
 
-        // Crear la orden de venta
         $order = Order::create([
             'user_id' => auth()->id(),
             'nombre' => $validatedData['nombre'],
@@ -106,8 +109,7 @@ class VentasController extends Controller
             'ubicacion' => $validatedData['ubicacion'],
         ]);
 
-        // Crear el detalle de la orden
-        OrderDetail::create([
+        $orderDetail = OrderDetail::create([
             'order_id' => $order->id,
             'cedula' => $validatedData['cedula'],
             'product_id' => $product->id,
@@ -115,53 +117,55 @@ class VentasController extends Controller
             'total' => $total,
         ]);
 
-        // Actualizar la cantidad de producto en stock
         $product->quantity -= $validatedData['cantidad'];
         $product->save();
 
-        // Llamar al método para registrar la auditoría
         $this->logAudit('venta creada', $product);
 
-        // Notificación flash de éxito
-        Session::flash('success', 'Producto vendido exitosamente!');
+        // Verificar si se proporcionó un correo electrónico y si está lleno antes de intentar enviar el correo
+        $email = $request->input('email');
+        if (!empty($email)) {
+            try {
+                Mail::to($email)->send(new FacturaMail($orderDetail));
+                Session::flash('success', 'Producto vendido exitosamente y se ha enviado la factura por correo electrónico.');
+            } catch (\Exception $e) {
+                Log::error('Error al enviar el correo: ' . $e->getMessage());
+                Session::flash('success', 'Producto vendido exitosamente, pero hubo un problema al enviar el correo.');
+            }
+        } else {
+            Session::flash('success', 'Producto vendido exitosamente!');
+        }
 
-        // Redireccionar a la página de ventas
         return redirect()->route('ventas.index');
     }
 
-
     public function crear_ventas(Request $request)
     {
-        // Validación de datos del formulario
         $validatedData = $request->validate([
             'cedula' => 'required|integer',
             'nombre' => 'required|string|max:255',
             'cantidad' => 'required|integer|min:1',
             'ubicacion' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:255',
         ]);
 
-        // Buscar el producto por nombre
-        $product = Product::where('name', $request->input('nombre'))->firstOrFail();
+        $product = Product::where('name', $validatedData['nombre'])->firstOrFail();
 
-        // Validar la cantidad disponible
-        if ($request->input('cantidad') > $product->quantity) {
+        if ($validatedData['cantidad'] > $product->quantity) {
             return redirect()->back()->withErrors(['cantidad' => 'La cantidad a vender excede el stock disponible.']);
         }
 
-        // Calcular el total de la venta
         $total = $validatedData['cantidad'] * $product->price;
 
-        // Crear la orden de venta
         $order = Order::create([
             'user_id' => auth()->id(),
             'nombre' => $validatedData['nombre'],
             'cantidad' => $validatedData['cantidad'],
             'total' => $total,
-            'ubicacion' => $validatedData['ubicacion'],
+            'ubicacion' => $validatedData['ubicacion'] ?? null,
         ]);
 
-        // Crear el detalle de la orden
-        OrderDetail::create([
+        $orderDetail = OrderDetail::create([
             'order_id' => $order->id,
             'cedula' => $validatedData['cedula'],
             'product_id' => $product->id,
@@ -169,17 +173,25 @@ class VentasController extends Controller
             'total' => $total,
         ]);
 
-        // Actualizar la cantidad de producto en stock
         $product->quantity -= $validatedData['cantidad'];
         $product->save();
 
-        // Llamar al método para registrar la auditoría
         $this->logAudit('venta creada por empleado', $product);
 
-        // Notificación flash de éxito
-        Session::flash('success', 'Producto vendido exitosamente!');
+        $email = $request->input('email');
+        if (!empty($email)) {
+            try {
+                Mail::to($email)->send(new FacturaMail($orderDetail));
+                Session::flash('success', 'Producto vendido exitosamente y se ha enviado la factura por correo electrónico.');
+            } catch (\Exception $e) {
+                Log::error('Error al enviar el correo: ' . $e->getMessage());
+                Log::error('Traza del error: ' . $e->getTraceAsString());
+                Session::flash('warning', 'Producto vendido exitosamente, pero hubo un problema al enviar el correo. Error: ' . $e->getMessage());
+            }
+        } else {
+            Session::flash('success', 'Producto vendido exitosamente!');
+        }
 
-        // Redireccionar a la página de ventas
         return redirect()->route('ventas-empleado');
     }
 

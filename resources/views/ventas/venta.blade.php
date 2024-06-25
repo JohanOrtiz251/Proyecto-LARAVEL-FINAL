@@ -24,6 +24,8 @@
                     </div>
                 @endif
 
+                
+
                 <form method="GET" action="{{ route('ventas.index') }}" class="mb-4 flex items-center">
                     <label for="category" class="mr-2 text-gray-800 dark:text-gray-200">Categoría:</label>
                     <select name="category" id="category" class="form-select bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-700 rounded">

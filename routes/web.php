@@ -69,6 +69,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
         Route::get('/Auditorio', [AuditController::class, 'pagina'])->name('historial-movimientos');
 
+        Route::get('admin/Auditorio', [AuditController::class, 'pagina_admin'])->name('historial-movimientos-admin');
+
 
 
 
