@@ -60,7 +60,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             Route::get('products/{product}', [ProductController::class, 'show_empleado'])->name('show_empleado');
             Route::get('products/create', [ProductController::class, 'create_empleado'])->name('empleado.products.create');
             Route::post('/products', [ProductController::class, 'store_empleado'])->name('productos.store');
-            Route::get('products/{product}/editar', [ProductController::class, 'edit_empleado'])->name('empleado.products.edit');
+            Route::get('products/editar/{product}', [ProductController::class, 'edit_empleado'])->name('empleado.products.edit');
             Route::put('products/{product}', [ProductController::class, 'update_empleado'])->name('empleado.products.update');
             Route::delete('products/{product}', [ProductController::class, 'destroy_empleado'])->name('empleado.products.destroy');
 
