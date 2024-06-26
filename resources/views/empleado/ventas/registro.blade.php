@@ -58,6 +58,11 @@
                             <input type="text" name="ubicacion" id="ubicacion" class="mt-1 p-2 border rounded-md w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white" value="{{ old('ubicacion') }}">
                         </div>
 
+                        <div class="mb-4">
+                            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Correo Electrónico (opcional)</label>
+                            <input type="email" name="email" id="email" class="mt-1 p-2 border rounded-md w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white" value="{{ old('email') }}">
+                        </div>
+
                         <div class="mt-4">
                             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{{ __('Vender') }}</button>
                         </div>
