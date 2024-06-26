@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VentasController;
+use App\Models\Audit;
 
 // Ruta principal
 Route::get('/', function () {
@@ -15,13 +16,13 @@ Route::get('/', function () {
 });
 
 // Rutas de autenticación y registro
-Route::middleware('guest')->group(function () {
-    Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-    Route::post('/register', [RegisterController::class, 'register']);
-    
-    Route::get('/login', [LogeController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [LogeController::class, 'login'])->name('login.post');
-});
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register']);
+
+// Rutas de autenticación
+Route::get('/login', [LogeController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LogeController::class, 'login'])->name('login.post');
+Route::post('/logout', [LogeController::class, 'logout'])->name('logout');
 
 // Rutas protegidas por autenticación y verificación (Sanctum)
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
@@ -43,48 +44,41 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::prefix('empleado')->group(function () {
             Route::get('/dashboard', function () {
                 return view('empleado.dashboard_empleado');
-            })->name('empleado.dashboard');
+            })->name('empleado');
 
-            // Rutas de productos para empleados
-            Route::prefix('productos')->group(function () {
-                Route::get('/', [ProductController::class, 'index_empleados'])->name('empleado-productos');
-                Route::get('/crear', [ProductController::class, 'create_empleado'])->name('crear_producto');
-                Route::post('/', [ProductController::class, 'store_empleado'])->name('productos.store');
-                Route::get('/{product}', [ProductController::class, 'show_empleado'])->name('show_empleado');
-                Route::get('/{product}/editar', [ProductController::class, 'edit_empleado'])->name('empleado.products.edit');
-                Route::put('/{product}', [ProductController::class, 'update_empleado'])->name('empleado.products.update');
-                Route::delete('/{product}', [ProductController::class, 'destroy_empleado'])->name('empleado.products.destroy');
-            });
+            // Rutas de productos
+            Route::get('/productos', [ProductController::class, 'index_empleados'])->name('empleado-productos');
+            Route::get('empleado/products/{product}', [ProductController::class, 'show_empleado'])->name('show_empleado');
+            Route::get('products/create', [ProductController::class, 'create_empleado'])->name('empleado.products.create');
+            Route::post('/products', [ProductController::class, 'store_empleado'])->name('productos.store');
+            Route::get('products/{product}/editar', [ProductController::class, 'edit_empleado'])->name('empleado.products.edit');
+            Route::put('products/{product}', [ProductController::class, 'update_empleado'])->name('empleado.products.update');
+            Route::delete('products/{product}', [ProductController::class, 'destroy_empleado'])->name('empleado.products.destroy');
 
-            // Rutas de ventas para empleados
-            Route::prefix('ventas')->group(function () {
-                Route::get('/', [VentasController::class, 'ventas_empleado'])->name('ventas-empleado');
-                Route::post('/store', [VentasController::class, 'crear_ventas'])->name('ventas-del-empleado');
-                Route::get('/listado', [VentasController::class, 'listaventas_empleado'])->name('listado-ventas');
-                Route::get('/{id}', [VentasController::class, 'ventas_show'])->name('factura.ventas');
-            });
+            // Rutas de ventas
+            Route::get('/ventas', [VentasController::class, 'ventas_empleado'])->name('ventas-empleado');
+            Route::get('empleado/products/{product}/editar', [VentasController::class, 'ventas'])->name('empleado.ventas');
+            Route::get('/ventas/listado', [VentasController::class, 'listaventas_empleado'])->name('listado-ventas');
+            Route::post('/ventas/store', [VentasController::class, 'crear_ventas'])->name('ventas-del-empleado');
+            Route::get('ventas/{id}', [VentasController::class, 'ventas_show'])->name('factura.ventas');
 
-            // Rutas de auditoría para empleados
+            // Movimientos
             Route::get('/Auditorio', [AuditController::class, 'pagina'])->name('historial-movimientos');
-
         });
     });
 
     // Rutas para administradores
     Route::middleware('role:admin')->group(function () {
-        Route::prefix('admin')->group(function () {
-            Route::get('/dashboard', function () {
-                return view('admin.dashboard');
-            })->name('admin.dashboard');
+        Route::get('/admin/dashboard', function () {
+            return view('dashboard');
+        })->name('admin.dashboard');
 
-            // Rutas de auditoría para administradores
-            Route::get('/Auditorio', [AuditController::class, 'pagina_admin'])->name('historial-movimientos-admin');
-        });
+        Route::get('admin/Auditorio', [AuditController::class, 'pagina_admin'])->name('historial-movimientos-admin');
+
+        // Rutas de recursos
+        Route::resource('products', ProductController::class);
+        Route::resource('ventas', VentasController::class);
+        Route::resource('suppliers', SupplierController::class);
+        Route::resource('categorys', CategoryController::class);
     });
 });
-
-// Rutas de recursos (accesibles para todos los usuarios autenticados)
-Route::resource('products', ProductController::class);
-Route::resource('ventas', VentasController::class); // Solo las rutas necesarias para 'ventas'
-Route::resource('suppliers', SupplierController::class);
-Route::resource('categorys', CategoryController::class);

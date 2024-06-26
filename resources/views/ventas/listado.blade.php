@@ -1,9 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="w-full flex justify-center">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('Lista de Productos vendidos') }}
-            </h2>
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                    {{ __('Lista de Productos vendidos') }}
+                </h2>
+            </div>
         </div>
     </x-slot>
 
@@ -47,27 +49,27 @@
                     <table class="table-auto w-full">
                         <thead>
                             <tr class="bg-gray-200 dark:bg-gray-700">
-                                <th class="px-4 py-2 text-left">{{ __('Nombre') }}</th>
-                                <th class="px-4 py-2 text-left">{{ __('Cantidad') }}</th>
-                                <th class="px-4 py-2 text-left">{{ __('Total') }}</th>
-                                <th class="px-4 py-2 text-left">{{ __('Ubicación') }}</th>
-                                <th class="px-4 py-2 text-left">{{ __('Acciones') }}</th>
+                                <th class="px-4 py-2 text-left text-gray-800 dark:text-gray-200">{{ __('Nombre') }}</th>
+                                <th class="px-4 py-2 text-left text-gray-800 dark:text-gray-200">{{ __('Cantidad') }}</th>
+                                <th class="px-4 py-2 text-left text-gray-800 dark:text-gray-200">{{ __('Total') }}</th>
+                                <th class="px-4 py-2 text-left text-gray-800 dark:text-gray-200">{{ __('Ubicación') }}</th>
+                                <th class="px-4 py-2 text-left text-gray-800 dark:text-gray-200">{{ __('Acciones') }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse ($orders as $order)
                                 <tr class="border-b border-gray-300 dark:border-gray-700">
-                                    <td class="px-4 py-2">{{ $order->nombre }}</td>
-                                    <td class="px-4 py-2">{{ $order->cantidad }}</td>
-                                    <td class="px-4 py-2">${{ $order->total }}</td>
-                                    <td class="px-4 py-2">{{ $order->ubicacion }}</td>
+                                    <td class="px-4 py-2 text-gray-800 dark:text-gray-200">{{ $order->nombre }}</td>
+                                    <td class="px-4 py-2 text-gray-800 dark:text-gray-200">{{ $order->cantidad }}</td>
+                                    <td class="px-4 py-2 text-gray-800 dark:text-gray-200">${{ $order->total }}</td>
+                                    <td class="px-4 py-2 text-gray-800 dark:text-gray-200">{{ $order->ubicacion }}</td>
                                     <td class="px-4 py-2">
                                         <a href="{{ route('ventas.show', $order->id) }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">{{ __('Factura') }}</a>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td class="px-4 py-2 text-center" colspan="5">{{ __('No hay ventas registradas.') }}</td>
+                                    <td class="px-4 py-2 text-center text-gray-800 dark:text-gray-200" colspan="5">{{ __('No hay ventas registradas.') }}</td>
                                 </tr>
                             @endforelse
                         </tbody>

@@ -27,8 +27,8 @@
                     <tbody>
                         @foreach ($categorys as $category)
                         <tr>
-                            <td class="border-t-0 border-l-0 border-r-0 px-4 py-2 text-white font-bold">{{ $category->name }}</td>
-                            <td class="border-t-0 border-l-0 border-r-0 px-4 py-2">
+                            <td class="border-t-0 border-l-0 border-r-0 px-4 py-2 text-white font-bold text-center">{{ $category->name }}</td>
+                            <td class="px-4 py-2 flex gap-2 justify-center">
                                 <a href="{{ route('categorys.show', $category->id) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Ver</a>
                                 <a href="{{ route('categorys.edit', $category->id) }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Editar</a>
                                 <form action="{{ route('categorys.destroy', $category->id) }}" method="POST" style="display: inline-block;">
