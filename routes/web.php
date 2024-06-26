@@ -19,7 +19,6 @@ Route::get('/', function () {
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 
-// Rutas de autenticación
 Route::get('/login', [LogeController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LogeController::class, 'login'])->name('login.post');
 Route::post('/logout', [LogeController::class, 'logout'])->name('logout');
@@ -29,10 +28,15 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     // Dashboard principal después de iniciar sesión
     Route::get('/dashboard', function () {
+        if (auth()->user()->hasRole('admin')) {
+            return redirect()->route('admin.dashboard');
+        } elseif (auth()->user()->hasRole('employee')) {
+            return redirect()->route('employee.dashboard');
+        }
         return view('dashboard');
     })->name('dashboard');
 
-    // Rutas específicas para VentasController
+    // Rutas específicas para VentasController (comunes para ambos roles)
     Route::prefix('ventas')->group(function () {
         Route::get('/listaventas', [VentasController::class, 'listaventas'])->name('ventas.listaventas');
         Route::get('/{id}', [VentasController::class, 'show'])->name('ventas.show');
@@ -41,6 +45,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     // Rutas para empleados
     Route::middleware('role:employee')->group(function () {
+        // Ruta adicional para el dashboard de empleados
+        Route::get('/employee/dashboard', function () {
+            return view('empleado.dashboard_empleado');
+        })->name('employee.dashboard');
+
         Route::prefix('empleado')->group(function () {
             Route::get('/dashboard', function () {
                 return view('empleado.dashboard_empleado');
@@ -48,7 +57,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
             // Rutas de productos
             Route::get('/productos', [ProductController::class, 'index_empleados'])->name('empleado-productos');
-            Route::get('empleado/products/{product}', [ProductController::class, 'show_empleado'])->name('show_empleado');
+            Route::get('products/{product}', [ProductController::class, 'show_empleado'])->name('show_empleado');
             Route::get('products/create', [ProductController::class, 'create_empleado'])->name('empleado.products.create');
             Route::post('/products', [ProductController::class, 'store_empleado'])->name('productos.store');
             Route::get('products/{product}/editar', [ProductController::class, 'edit_empleado'])->name('empleado.products.edit');
@@ -57,7 +66,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
             // Rutas de ventas
             Route::get('/ventas', [VentasController::class, 'ventas_empleado'])->name('ventas-empleado');
-            Route::get('empleado/products/{product}/editar', [VentasController::class, 'ventas'])->name('empleado.ventas');
+            Route::get('products/{product}/editar', [VentasController::class, 'ventas'])->name('empleado.ventas');
             Route::get('/ventas/listado', [VentasController::class, 'listaventas_empleado'])->name('listado-ventas');
             Route::post('/ventas/store', [VentasController::class, 'crear_ventas'])->name('ventas-del-empleado');
             Route::get('ventas/{id}', [VentasController::class, 'ventas_show'])->name('factura.ventas');
