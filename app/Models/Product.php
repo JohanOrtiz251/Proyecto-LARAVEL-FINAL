@@ -18,7 +18,7 @@ class Product extends Model
         'supplier_id',
         'expiry_date',
         'location',
-        'reorder_level', // Añadir este campo
+        'reorder_level', 
     ];
 
     public function category()
