@@ -1,55 +1,58 @@
 <x-guest-layout>
-    <div class="min-h-screen flex items-center justify-center bg-gray-200 p-6 relative">
-        <!-- Imagen de fondo sin opacidad ni filtro de desenfoque -->
-        <div class="absolute inset-0 bg-cover bg-center z-0" style="background-image: url('https://u7.uidownload.com/vector/581/993/vector-abstract-dark-grey-diagonal-shiny-lines-background-vector-image-.jpg');"></div>
+    <div class="min-h-screen flex items-center justify-center bg-gray-900">
+        <!-- Fondo con efecto de desenfoque -->
+        <div class="absolute inset-0 z-0 overflow-hidden">
+            <div class="absolute inset-0 bg-cover bg-center filter blur-lg" style="background-image: url('{{ asset('images/re.jpeg') }}');"></div>
+        </div>
 
-        <!-- Contenedor del formulario con fondo semi-transparente y sombra -->
-        <div class="relative z-10 w-full max-w-xl bg-white bg-opacity-50 p-10 rounded-lg shadow-lg">
+        <!-- Contenedor del formulario -->
+        <div class="relative z-10 w-full max-w-md bg-gray-800 bg-opacity-50 p-8 rounded-lg shadow-lg">
             <x-validation-errors class="mb-4 text-red-500" />
 
-            <h1 class="text-3xl font-bold text-center text-gray-900 mb-6">Registro</h1>
+            <h1 class="text-3xl font-bold text-center text-white mb-6">Registro</h1>
 
-            <form method="POST" action="{{ route('register') }}">
+            <form method="POST" action="{{ route('register') }}" class="space-y-4">
                 @csrf
 
-                <div class="mb-6">
-                    <label for="name" class="block text-lg font-medium text-gray-900 mb-1">{{ __('Name') }}</label>
-                    <input id="name" class="block w-full p-3 border border-gray-300 rounded-lg bg-gray-100 bg-opacity-70 text-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+                <!-- Nombre -->
+                <div>
+                    <label for="name" class="block text-gray-300 text-lg font-medium mb-1">Nombre</label>
+                    <input id="name" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" placeholder="Tu nombre" class="block w-full px-4 py-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-300 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 </div>
 
-                <div class="mb-6">
-                    <label for="email" class="block text-lg font-medium text-gray-900 mb-1">{{ __('Email') }}</label>
-                    <input id="email" class="block w-full p-3 border border-gray-300 rounded-lg bg-gray-100 bg-opacity-70 text-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent" type="email" name="email" :value="old('email')" required autocomplete="username" />
+                <!-- Correo Electrónico -->
+                <div>
+                    <label for="email" class="block text-gray-300 text-lg font-medium mb-1">Correo Electrónico</label>
+                    <input id="email" type="email" name="email" :value="old('email')" required autocomplete="email" placeholder="ejemplo@correo.com" class="block w-full px-4 py-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-300 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 </div>
 
-                <div class="mb-6">
-                    <label for="password" class="block text-lg font-medium text-gray-900 mb-1">{{ __('Password') }}</label>
-                    <input id="password" class="block w-full p-3 border border-gray-300 rounded-lg bg-gray-100 bg-opacity-70 text-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent" type="password" name="password" required autocomplete="new-password" />
+                <!-- Contraseña -->
+                <div>
+                    <label for="password" class="block text-gray-300 text-lg font-medium mb-1">Contraseña</label>
+                    <input id="password" type="password" name="password" required autocomplete="new-password" placeholder="Mínimo 8 caracteres" class="block w-full px-4 py-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-300 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 </div>
 
-                <div class="mb-6">
-                    <label for="password_confirmation" class="block text-lg font-medium text-gray-900 mb-1">{{ __('Confirm Password') }}</label>
-                    <input id="password_confirmation" class="block w-full p-3 border border-gray-300 rounded-lg bg-gray-100 bg-opacity-70 text-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent" type="password" name="password_confirmation" required autocomplete="new-password" />
+                <!-- Confirmar contraseña -->
+                <div>
+                    <label for="password_confirmation" class="block text-gray-300 text-lg font-medium mb-1">Confirmar contraseña</label>
+                    <input id="password_confirmation" type="password" name="password_confirmation" required autocomplete="new-password" placeholder="Repite tu contraseña" class="block w-full px-4 py-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-300 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 </div>
 
-                <div class="mb-6">
-                    <label for="role" class="block text-lg font-medium text-gray-900 mb-1">{{ __('Role') }}</label>
-                    <div class="relative">
-                        <select id="role" name="role_id" class="block w-full bg-gray-100 bg-opacity-70 border border-gray-300 text-lg text-black py-3 px-4 pr-8 rounded shadow-sm leading-tight focus:outline-none focus:border-gray-500 focus:shadow-outline">
-                            @foreach($roles as $role)
-                                <option value="{{ $role->id }}">{{ $role->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                <!-- Rol -->
+                <div>
+                    <label for="role" class="block text-gray-300 text-lg font-medium mb-1">Rol</label>
+                    <select id="role" name="role_id" class="block w-full px-4 py-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-300 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        @foreach($roles as $role)
+                            <option value="{{ $role->id }}">{{ $role->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
 
-                <div class="flex items-center justify-between mb-6">
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
-                        {{ __('Already registered?') }}
-                    </a>
-
-                    <x-button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md">
-                        {{ __('Register') }}
+                <!-- Enlaces y botón -->
+                <div class="flex items-center justify-between">
+                    <a href="{{ route('login') }}" class="text-sm text-gray-300 hover:text-gray-400">¿Ya tienes cuenta? Inicia sesión aquí</a>
+                    <x-button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow-md">
+                        Registrarse
                     </x-button>
                 </div>
             </form>
