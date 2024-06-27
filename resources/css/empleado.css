@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+[x-cloak] {
+    display: none;
+}
+
+/* Añade aquí estilos personalizados para la barra lateral si es necesario */
+/* Ajustes personalizados para la barra lateral */
+.sidebar {
+    transition: width 0.3s;
+    overflow-y: auto;
+    background-color: #fff; /* Fondo blanco */
+    color: #000; /* Texto negro */
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.1); /* Cambia el color del scrollbar si es necesario */
+    border-radius: 2px;
+}
+
+/* Transición del margen del contenido principal */
+.transition-margin {
+    transition: margin-left 0.3s;
+}

@@ -12,8 +12,10 @@ use App\Models\Audit;
 
 // Ruta principal
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth/login');
 });
+
+
 
 // Rutas de autenticación y registro
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');

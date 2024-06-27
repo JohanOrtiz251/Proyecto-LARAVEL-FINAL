@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+    <link rel="stylesheet" href="{{ asset('images/logo.css') }}">
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -24,13 +25,12 @@
     <div class="min-h-screen bg-gray-100 dark:bg-gray-900 flex">
         <!-- Sidebar -->
         <aside class="fixed top-0 left-0 flex flex-col w-64 h-screen px-5 py-8 overflow-y-auto bg-white border-r dark:bg-gray-900 dark:border-gray-700">
-            <div class="flex mb-6 ml-4">
+            <div class="flex mb-6 ml-4" style="width: 90px; height: 90px;">
                 <a href="{{ route('dashboard') }}">
-                    
-                    <img class="w-auto h-7" src="https://w7.pngwing.com/pngs/202/343/png-transparent-blue-and-black-computer-inventory-management-software-warehouse-management-system-warehouse-miscellaneous-company-text-thumbnail.png" alt="Logo">
+                    <img class="w-auto h-auto" src="{{ asset('images/logo.png') }}" alt="Logo">
                 </a>
             </div>
-
+            
             <div class="flex flex-col justify-between flex-1">
                 <nav class="flex-1 space-y-3">
                     <a class="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700" href="{{ route('dashboard') }}">

@@ -40,7 +40,7 @@ class CheckReorderLevels extends Command
 
         // Enviar el correo con la lista de productos
         Mail::raw($messageBody, function($message) {
-            $message->to('josebattleroyale@gmail.com')
+            $message->to('jesusalondon2016@gmail.com')
                     ->subject("Reabastecimiento necesario para productos")
                     ->from('vladimirjosetorrealba@gmail.com', 'Empresa');
         });

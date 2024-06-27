@@ -4,9 +4,9 @@
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
-                <div class="shrink-0 flex items-center">
+                <div class="shrink-0 flex items-center " style="width: 130px; height: 80px;>
                     <a href="{{ route('empleado') }}">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfiZOJjBnVDzQyfupzlqLs2F-RuzqSnf6hYYa6tDtemxx8EZh7ayOVNUYyyU6iDjRoflI&usqp=CAU" alt="Product Inventory Logo" class="block h-9 w-auto">
+                        <img class="w-auto h-auto" src="{{ asset('images/logito.png') }}" alt="Logo" >
                     </a>
                 </div>
 
