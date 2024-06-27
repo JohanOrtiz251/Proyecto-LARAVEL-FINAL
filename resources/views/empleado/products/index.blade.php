@@ -45,9 +45,10 @@
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="w-1/4 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
-                                <th class="w-1/2 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Descripción</th>
+                                <th class="w-1/4 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Descripción</th>
                                 <th class="w-1/8 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Precio</th>
                                 <th class="w-1/8 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cantidad</th>
+                                <th class="w-1/8 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nivel de Reorden</th>
                                 <th class="w-1/8 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
                             </tr>
                         </thead>
@@ -58,6 +59,7 @@
                                 <td class="px-4 py-2 whitespace-nowrap">{{ $product->description }}</td>
                                 <td class="px-4 py-2 whitespace-nowrap">${{ $product->price }}</td>
                                 <td class="px-4 py-2 whitespace-nowrap">{{ $product->quantity }}</td>
+                                <td class="px-4 py-2 whitespace-nowrap">{{ $product->reorder_level }}</td>
                                 <td class="px-4 py-2 whitespace-nowrap">
                                     <a href="{{ route('show_empleado', $product->id) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Ver</a>
                                     <a href="{{ route('empleado.products.edit', $product->id) }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Editar</a>

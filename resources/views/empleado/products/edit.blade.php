@@ -42,6 +42,11 @@
                             <input type="number" name="quantity" id="quantity" class="mt-1 p-2 border rounded-md w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white" value="{{ $product->quantity }}" required>
                         </div>
                         <div class="mb-4">
+                            <label for="reorder_level" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nivel de Reorden</label>
+                            <input type="number" name="reorder_level" id="reorder_level" class="mt-1 p-2 border rounded-md w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white" value="{{ old('reorder_level', $product->reorder_level) }}" required>
+
+                        </div>
+                        <div class="mb-4">
                             <label for="category_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Categoría ID</label>
                             <input type="number" name="category_id" id="category_id" class="mt-1 p-2 border rounded-md w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white" value="{{ $product->category_id }}" required>
                         </div>

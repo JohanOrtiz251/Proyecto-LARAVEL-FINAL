@@ -59,7 +59,6 @@
                                 @endforeach
                             </select>
                         </div>
-
                         <div class="mb-4">
                             <label for="expiry_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Fecha de caducidad</label>
                             <input type="date" name="expiry_date" id="expiry_date" class="mt-1 p-2 border rounded-md w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white">
@@ -67,6 +66,10 @@
                         <div class="mb-4">
                             <label for="location" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ubicación</label>
                             <input type="text" name="location" id="location" class="mt-1 p-2 border rounded-md w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        </div>
+                        <div class="mb-4">
+                            <label for="reorder_level" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nivel de Reorden</label>
+                            <input type="number" name="reorder_level" id="reorder_level" class="mt-1 p-2 border rounded-md w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
                         </div>
                         <div class="mt-4">
                             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{{ __('Guardar') }}</button>
