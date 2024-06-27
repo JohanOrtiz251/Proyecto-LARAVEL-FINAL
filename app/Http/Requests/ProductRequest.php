@@ -22,7 +22,6 @@ class ProductRequest extends FormRequest
             'supplier_id' => 'required|exists:suppliers,id',
             'expiry_date' => 'nullable|date',
             'location' => 'nullable|string|max:255',
-            'reorder_level' => 'required|integer', // Añadir esta regla
         ];
     }
 }
