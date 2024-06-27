@@ -24,6 +24,7 @@
                             <th class="px-4 py-2 text-white bg-gray-800 dark:bg-gray-700">Descripción</th>
                             <th class="px-4 py-2 text-white bg-gray-800 dark:bg-gray-700">Precio</th>
                             <th class="px-4 py-2 text-white bg-gray-800 dark:bg-gray-700">Cantidad</th>
+                            <th class="px-4 py-2 text-white bg-gray-800 dark:bg-gray-700">Nivel de Reorden</th>
                             <th class="px-4 py-2 text-white bg-gray-800 dark:bg-gray-700">Acciones</th>
                         </tr>
                     </thead>
@@ -34,6 +35,7 @@
                             <td class="px-4 py-2 text-white font-bold text-center">{{ $product->description }}</td>
                             <td class="px-4 py-2 text-white font-bold text-center">${{ $product->price }}</td>
                             <td class="px-4 py-2 text-white font-bold text-center">{{ $product->quantity }}</td>
+                            <td class="px-4 py-2 bg-red-500 text-white font-bold text-center">{{ $product->reorder_level }}</td>
                             <td class="px-4 py-2 flex gap-2 justify-center">
                                 <a href="{{ route('products.show', $product->id) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Ver</a>
                                 <a href="{{ route('products.edit', $product->id) }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Editar</a>

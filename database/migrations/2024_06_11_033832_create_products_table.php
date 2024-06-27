@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
@@ -19,16 +16,13 @@ return new class extends Migration
             $table->text('description');
             $table->decimal('price', 10, 2);
             $table->integer('quantity');
+            $table->integer('reorder_level'); // Añadir esta línea
             $table->date('expiry_date')->nullable();
             $table->string('location')->nullable();
             $table->timestamps();
         });
-        
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('products');

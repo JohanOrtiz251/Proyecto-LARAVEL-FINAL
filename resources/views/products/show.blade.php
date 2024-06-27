@@ -19,11 +19,15 @@
                     </div>
                     <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow-md">
                         <p class="font-semibold text-lg text-gray-900 dark:text-gray-100">Precio:</p>
-                        <p class="text-gray-800 dark:text-gray-300">{{ $product->price }}</p>
+                        <p class="text-gray-800 dark:text-gray-300">${{ $product->price }}</p>
                     </div>
                     <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow-md">
                         <p class="font-semibold text-lg text-gray-900 dark:text-gray-100">Cantidad:</p>
                         <p class="text-gray-800 dark:text-gray-300">{{ $product->quantity }}</p>
+                    </div>
+                    <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow-md">
+                        <p class="font-semibold text-lg text-gray-900 dark:text-gray-100">Nivel de Reorden:</p>
+                        <p class="text-gray-800 dark:text-gray-300">{{ $product->reorder_level }}</p>
                     </div>
                     <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow-md">
                         <p class="font-semibold text-lg text-gray-900 dark:text-gray-100">Categoría ID:</p>

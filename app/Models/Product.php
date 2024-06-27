@@ -18,6 +18,7 @@ class Product extends Model
         'supplier_id',
         'expiry_date',
         'location',
+        'reorder_level', // Añadir este campo
     ];
 
     public function category()
@@ -28,5 +29,10 @@ class Product extends Model
     public function supplier()
     {
         return $this->belongsTo(Supplier::class);
+    }
+
+    public function needsRestocking()
+    {
+        return $this->quantity <= $this->reorder_level;
     }
 }
