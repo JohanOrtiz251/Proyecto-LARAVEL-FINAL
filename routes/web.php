@@ -33,7 +33,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         if (auth()->user()->hasRole('admin')) {
             return redirect()->route('admin.dashboard');
         } elseif (auth()->user()->hasRole('employee')) {
-            return redirect()->route('employee.dashboard');
+            return redirect()->route('empleado.inicio');
         }
         return view('dashboard');
     })->name('dashboard');
@@ -48,16 +48,20 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // Rutas para empleados
     Route::middleware('role:employee')->group(function () {
         // Ruta adicional para el dashboard de empleados
-        Route::get('/employee/dashboard', function () {
-            return view('empleado.dashboard_empleado');
-        })->name('employee.dashboard');
+        Route::get('/employee/inicio', function () {
+            return view('empleado.inicio_empleado');
+        })->name('empleado.inicio');
 
         Route::prefix('empleado')->group(function () {
-            Route::get('/dashboard', function () {
-                return view('empleado.dashboard_empleado');
+            Route::get('/inicio', function () {
+                return view('empleado.inicio_empleado');
             })->name('empleado');
 
             // Rutas de productos
+            Route::get('/instrucciones', function () {
+                return view('empleado.instrucciones_empleado');
+            })->name('instrucciones');
+
             Route::get('/productos', [ProductController::class, 'index_empleados'])->name('empleado-productos');
             Route::get('products/{product}', [ProductController::class, 'show_empleado'])->name('show_empleado');
             Route::get('/create', [ProductController::class, 'create_empleado'])->name('empleado.products.create');
@@ -80,8 +84,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     // Rutas para administradores
     Route::middleware('role:admin')->group(function () {
-        Route::get('/admin/dashboard', function () {
-            return view('dashboard');
+        Route::get('/admin/inicio', function () {
+            return view('inicio');
         })->name('admin.dashboard');
 
         Route::get('admin/Auditorio', [AuditController::class, 'pagina_admin'])->name('historial-movimientos-admin');

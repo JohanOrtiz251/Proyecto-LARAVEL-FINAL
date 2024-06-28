@@ -25,11 +25,7 @@
     <div class="min-h-screen bg-gray-100 dark:bg-gray-900 flex">
         <!-- Sidebar -->
         <aside class="fixed top-0 left-0 flex flex-col w-64 h-screen px-5 py-8 overflow-y-auto bg-white border-r dark:bg-gray-900 dark:border-gray-700">
-            <div class="flex mb-6 ml-4" style="width: 90px; height: 90px;">
-                <a href="{{ route('dashboard') }}">
-                    <img class="w-auto h-auto" src="{{ asset('images/logo.png') }}" alt="Logo">
-                </a>
-            </div>
+            
             
             <div class="flex flex-col justify-between flex-1">
                 <nav class="flex-1 space-y-3">

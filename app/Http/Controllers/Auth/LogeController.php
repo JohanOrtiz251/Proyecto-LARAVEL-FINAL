@@ -21,7 +21,7 @@ class LogeController extends Controller
         if ($user->hasRole('admin')) {
             return redirect()->route('admin.dashboard');
         } elseif ($user->hasRole('employee')) {
-            return redirect()->route('employee.dashboard');
+            return redirect()->route('empleado.inicio');
         } else {
             return redirect()->route('dashboard');
         }
