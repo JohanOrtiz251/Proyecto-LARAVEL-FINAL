@@ -56,7 +56,13 @@
                     </x-nav-link>
                 </div>
 
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link href="{{ route('empleado.tareas.no_realizadas') }}" :active="request()->routeIs('asignacion')">
+                        {{ __('Tareas asignadas') }}
+                    </x-nav-link>
+                </div>
 
+                
 
 
             </div>

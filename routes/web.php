@@ -7,6 +7,8 @@ use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\TaskAssignmentController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\VentasController;
 use App\Models\Audit;
 
@@ -14,8 +16,6 @@ use App\Models\Audit;
 Route::get('/', function () {
     return view('auth/login');
 });
-
-
 
 // Rutas de autenticación y registro
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
@@ -79,6 +79,20 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
             // Movimientos
             Route::get('/Auditorio', [AuditController::class, 'pagina'])->name('historial-movimientos');
+
+
+
+           
+
+
+            Route::patch('/tareas/{tarea}/completar', [TaskController::class, 'completar'])->name('asignacion.completar');
+
+            Route::get('/tareas/{tarea}', [TaskController::class, 'show_emple'])->name('empleado.tareas.show');
+
+            Route::get('/asignaciones', [TaskController::class, 'tareasNoRealizadas'])->name('empleado.tareas.no_realizadas');
+
+
+            Route::get('/faltantes', [TaskController::class, 'tareasRealizadas'])->name('empleado.tareas.realizadas');
         });
     });
 
@@ -90,10 +104,15 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
         Route::get('admin/Auditorio', [AuditController::class, 'pagina_admin'])->name('historial-movimientos-admin');
 
-        // Rutas de recursos
-        Route::resource('products', ProductController::class);
-        Route::resource('ventas', VentasController::class);
-        Route::resource('suppliers', SupplierController::class);
-        Route::resource('categorys', CategoryController::class);
+        Route::prefix('admin')->group(function () {
+            Route::resource('tareas', TaskController::class)->parameters(['tareas' => 'tarea']);
+
+
+            // Rutas de recursos
+            Route::resource('products', ProductController::class)->parameters(['products' => 'product']);
+            Route::resource('ventas', VentasController::class)->parameters(['ventas' => 'venta']);
+            Route::resource('suppliers', SupplierController::class)->parameters(['suppliers' => 'supplier']);
+            Route::resource('categorys', CategoryController::class)->parameters(['categorys' => 'category']);
+        });
     });
 });

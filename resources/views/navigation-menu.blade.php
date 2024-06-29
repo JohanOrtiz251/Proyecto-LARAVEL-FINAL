@@ -31,6 +31,17 @@
                 </div>
             </div>
 
+
+            <div class="flex-grow flex justify-center items-center">
+                <div class="hidden sm:flex sm:items-center">
+                    <div class="pt-2 pb-3 space-y-1">
+                        <x-responsive-nav-link href="{{ route('tareas.index') }}" :active="request()->routeIs('historial-movimientos-admin')">
+                            {{ __('Asignar Tareas') }}
+                        </x-responsive-nav-link>
+                    </div>
+                </div>
+            </div>
+
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <!-- Teams Dropdown -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
